@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import App from './App.vue';
+// import { mapState } from 'vuex';
 
 Vue.config.productionTip = false;
 
@@ -10,38 +11,76 @@ new Vue({
   render: h => h(App),
 }).$mount('#app');
 
-// new Vue({
-//     // state
-//     data () {
-//         return {
-//             count: 0
-//         };
-//     },
-//     // view
-//     template: `
-//         <div>{{ count }}</div>
-//     `,
-//     // actions
-//     methods: {
-//         increment () {
-//             this.count++;
-//         }
-//     }
-// });
-
 const store = new Vuex.Store({
     state: {
-        count: 0
+        todos: [
+            { id: 1, text: '...', done: true },
+            { id: 2, text: '...', done: false }
+        ]
     },
-    mutations : {
-        increment (state) {
-            state.count++;
+    getters: {
+        doneTodos: state => {
+            return state.todos.filter(todo => todo.done);
         }
     }
 });
 
-store.commit('increment');
+export default {
+    computed: {
+        doneTodosCount () {
+            return this.$store.getters.doneTodosCount;
+        }
+    }
+};
 
 /* eslint-disable no-console */
-console.log(store.state.count);
+console.log(store.getters.doneTodos);
 /* eslint-enable no-console */
+
+
+// const store = new Vuex.Store({
+//     state: {
+//         count: 0
+//     },
+//     mutations : {
+//         increment (state) {
+//             state.count++;
+//         }
+//     }
+// });
+//
+// const Counter = {
+//     template: `<div>{{ count }}</div>`,
+//     computed: {
+//         count () {
+//             return this.$store.state.count;
+//         }
+//     }
+// };
+//
+// const app = new Vue({
+//     el: '#app',
+//     store,
+//     components: { Counter },
+//     template: `
+//         <div class="app">
+//             <counter></counter>
+//         </div>
+//     `
+// });
+//
+// export default {
+//     computed: mapState({
+//         count: state => state.count,
+//         countAlias: 'count',
+//         countPlusLocalState (state) {
+//             return state.count + this.localCount;
+//         }
+//     })
+// };
+//
+// store.commit('increment');
+//
+// /* eslint-disable no-console */
+// console.log(store.state.count);
+// /* eslint-enable no-console */
